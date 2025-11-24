@@ -3,44 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>一起旅行・文青手札</title>
+  <title>一起旅行・2026 日本自駕</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-512.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#5D7A6B">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#8B7E6A">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#F8F5F0;--card:#FFF;--accent:#5D7A6B;--text:#2D2D2D;--light:#8CAA9A}
-    body.dark{--bg:#1A1E1B;--card:#252B27;--accent:#A8C4A0;--text:#E8E8E8;--light:#6B9080}
+    :root{--bg:#FAF9F6;--card:#FFF;--accent:#8B7E6A;--text:#3D3D3D;--soft:#B8A89A}
+    body.dark{--bg:#1F1F1F;--card:#2C2C2C;--accent:#D4C2A9;--text:#E8E8E8;--soft:#A89A8B}
     *{margin:0;padding:0;box-sizing:border-box}
     body{background:var(--bg);color:var(--text);font-family:'Noto Serif TC',serif;font-size:18px;line-height:1.8;min-height:100vh}
-    header{background:var(--accent);color:white;padding:20px;text-align:center;position:fixed;width:100%;top:0;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,0.15)}
-    header h1{font-family:'ZCOOL XiaoWei',serif;font-size:32px;margin-bottom:8px}
-    nav{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:10px}
-    nav a{color:white;text-decoration:none;font-size:19px;padding:10px 8px;opacity:0.9;border-bottom:3px solid transparent}
-    nav a.active{opacity:1;border-bottom:3px solid white}
-    main{padding-top:110px;padding-bottom:100px;max-width:1000px;margin:0 auto;padding-left:20px;padding-right:20px}
+    header{background:var(--accent);color:white;padding:25px;text-align:center;position:fixed;width:100%;top:0;z-index:1000}
+    header h1{font-family:'ZCOOL XiaoWei',serif;font-size:36px;letter-spacing:3px}
+    nav{display:flex;justify-content:center;gap:20px;margin-top:15px;flex-wrap:wrap}
+    nav a{color:white;text-decoration:none;font-size:20px;padding:12px 24px;border-radius:30px}
+    nav a.active{background:rgba(255,255,255,0.3)}
+    main{padding-top:120px;padding-bottom:80px;max-width:1100px;margin:0 auto;padding:20px}
     .page{display:none}
-    .page.active{display:block;animation:fade 0.4s}
-    @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
-    .card{background:var(--card);padding:32px;margin:25px 0;border-radius:22px;box-shadow:0 12px 40px rgba(0,0,0,0.12)}
-    h2{font-family:'ZCOOL XiaoWei',serif;color:var(--accent);font-size:34px;text-align:center;margin-bottom:28px}
-    input,select,button{width:100%;padding:18px;margin:12px 0;border:none;border-radius:16px;font-size:19px}
-    input,select{background:#f0f0f0}
-    body.dark input,body.dark select{background:#333;color:white}
-    button{background:var(--accent);color:white;font-weight:bold;cursor:pointer;transition:0.3s}
-    button:hover{background:var(--light)}
-    .btn-small{padding:14px 30px;width:auto;display:inline-block;margin:8px;font-size:18px}
-    #itineraryList{margin:35px 0}
-    .itinerary-item{background:white;padding:22px;margin:15px 0;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.12);cursor:move;font-size:20px;display:flex;align-items:center;user-select:none}
+    .page.active{display:block;animation:fade 0.5s}
+    @keyframes fade{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+    .card{background:var(--card);padding:40px;margin:30px 0;border-radius:28px;box-shadow:0 15px 50px rgba(0,0,0,0.12)}
+    h2{font-family:'ZCOOL XiaoWei',serif;color:var(--accent);font-size:38px;text-align:center;margin-bottom:30px}
+    input,button{width:100%;padding:20px;margin:15px 0;border:none;border-radius:20px;font-size:20px}
+    input{background:#f5f5f5;text-align:center;letter-spacing:2px}
+    body.dark input{background:#333;color:white}
+    button{background:var(--accent);color:white;font-weight:bold;cursor:pointer}
+    .btn-small{padding:16px 36px;width:auto;display:inline-block;margin:10px;font-size:19px;border-radius:30px}
+    .room-code{font-size:52px;font-weight:bold;color:var(--accent);letter-spacing:12px;margin:30px 0;text-align:center}
+    #itineraryList{margin:40px 0;min-height:100px}
+    .itinerary-item{background:white;padding:28px;margin:18px 0;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,0.1);cursor:move;font-size:22px;display:flex;align-items:center;transition:0.3s}
     body.dark .itinerary-item{background:#333}
-    .drag-handle{font-size:32px;margin-right:16px;color:#aaa;cursor:grab}
-    #locationMap{height:480px;margin:35px 0;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.15)}
-    .tutorial{background:#f0f8f0;padding:40px;border-radius:22px;text-align:center;font-size:20px}
-    body.dark .tutorial{background:#2a3a2a}
-    .users{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:30px 0}
-    .user{background:rgba(93,122,107,0.25);padding:12px 20px;border-radius:40px;font-size:18px}
-    .avatar{width:26px;height:26px;border-radius:50%;display:inline-block;margin-right:10px;vertical-align:middle}
+    .drag-handle{font-size:36px;margin-right:20px;color:#ccc;cursor:grab}
+    #locationMap{height:520px;margin:40px 0;border-radius:20px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.15)}
+    .online{font-size:18px;text-align:center;margin:20px 0;color:var(--soft)}
   </style>
 </head>
 <body>
@@ -48,145 +44,173 @@
 <header>
   <h1>一起旅行</h1>
   <nav>
-    <a href="#" class="active" onclick="openPage('home')">首頁</a>
-    <a href="#" onclick="openPage('main')">共編行程</a>
-    <a href="#" onclick="openPage('budget')">預算</a>
-    <a href="#" onclick="openPage('nav')">導航</a>
+    <a href="#" class="active" onclick="show('home')">首頁</a>
+    <a href="#" onclick="show('my')">我的行程</a>
+    <a href="#" onclick="show('friend')">朋友分享</a>
   </nav>
 </header>
 
 <main>
-  <!-- 首頁教學 -->
+  <!-- 首頁 -->
   <section id="home" class="page active">
-    <div class="tutorial">
-      <h2>歡迎來到我們的旅行手札</h2>
-      <p style="margin:30px 0;font-size:22px">只要三步，和旅伴一起寫下最美回憶</p>
-      <p style="margin:20px 0;line-height:2">
-        1. 點「共編行程」→ 產生或加入房間<br>
-        2. 輸入目的地 → 生成行程 → 用手指拖曳調整順序<br>
-        3. 所有人都即時看到變動！手機加入主畫面就變獨立 App
-      </p>
-      <button class="btn-small" onclick="document.body.classList.toggle('dark')">夜間模式</button>
-      <div class="users" id="onlineUsers"></div>
+    <div class="card" style="text-align:center">
+      <h2>2026 日本自駕</h2>
+      <p style="font-size:24px;margin:40px 0">和家人朋友一起即時共編</p>
+      <div>
+        <button class="btn-small" onclick="show('my')">開始我的行程</button>
+        <button class="btn-small" onclick="show('friend')">加入朋友行程</button>
+        <button class="btn-small" onclick="document.body.classList.toggle('dark')">夜間模式</button>
+      </div>
     </div>
   </section>
 
-  <!-- 主頁：共編 + 行程 + AI + 地圖 -->
-  <section id="main" class="page">
+  <!-- 我的行程（自動建立房間）-->
+  <section id="my" class="page">
     <div class="card">
-      <h2>共編房間</h2>
-      <input type="text" id="nickname" placeholder="你的暱稱" value="旅人">
-      <button onclick="setNickname()">設定暱稱</button>
-      <input type="text" id="roomId" placeholder="房間代碼">
-      <div style="text-align:center;margin:20px 0">
-        <button class="btn-small" onclick="createRoom()">產生新房間</button>
-        <button class="btn-small" onclick="joinRoom()">加入房間</button>
-      </div>
-      <p style="text-align:center;font-size:21px">目前房間：<strong id="currentRoom">尚未加入</strong></p>
-      <div class="users" id="onlineUsers2"></div>
-
-      <h2 style="margin-top:50px">行程規劃・即時地圖</h2>
-      <input type="text" id="destination" placeholder="要去哪裡？" oninput="updateMap()">
-      <input type="number" id="days" placeholder="幾天幾夜">
+      <div class="room-code" id="myCode">載入中...</div>
+      <p class="online">目前 <span id="onlineCount1">1</span> 人正在編輯</p>
+      
+      <h2>日本自駕行程</h2>
+      <input type="text" id="dest" placeholder="例如：東京 → 箱根 → 京都" oninput="saveData()">
       <div style="text-align:center">
-        <button onclick="generateItinerary()">生成行程</button>
-        <button class="btn-small" onclick="getAIAttractions()">AI推薦景點</button>
+        <button onclick="aiJapan()">AI 生成日本自駕行程</button>
       </div>
-
-      <div id="itineraryList">
-        <p style="text-align:center;color:#888;margin:20px 0">產生行程後，用手指拖曳調整順序</p>
-      </div>
-
+      
+      <div id="itineraryList"></div>
       <div id="locationMap">
-        <iframe width="100%" height="100%" frameborder="0" style="border:0" src="" allowfullscreen></iframe>
+        <iframe width="100%" height="520" frameborder="0" style="border:0" src="" allowfullscreen></iframe>
       </div>
     </div>
   </section>
 
-  <!-- 預算與導航頁面保持不變（略） -->
-  <section id="budget" class="page">…預算內容…</section>
-  <section id="nav" class="page">…導航內容…</section>
+  <!-- 朋友分享 -->
+  <section id="friend" class="page">
+    <div class="card">
+      <h2>輸入朋友給你的代碼</h2>
+      <input type="text" id="codeInput" placeholder="例如 A1B2C3" style="font-size:32px;letter-spacing:8px">
+      <button onclick="joinRoom()">加入房間</button>
+      <p id="joinMsg" style="text-align:center;margin:30px 0;font-size:20px"></p>
+      
+      <div id="friendRoom" style="display:none">
+        <div class="room-code" id="friendCode"></div>
+        <p class="online">目前 <span id="onlineCount2">0</span> 人正在編輯</p>
+        <div id="friendList"></div>
+        <div id="friendMap">
+          <iframe width="100%" height="520" frameborder="0" style="border:0" src="" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script>
-  // ============ 關鍵：全部用 function 宣告，絕對不會崩 ============
-  function openPage(id) {
+  const firebaseConfig = {
+    databaseURL: "https://travel-together-2025-default-rtdb.asia-southeast1.firebasedatabase.app"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  let currentRoom = null;
+  let myName = "旅人" + Math.floor(Math.random()*999);
+
+  function show(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
     document.querySelectorAll('nav a').forEach(a => {
-      if (a.getAttribute('onclick') === "openPage('" + id + "')") a.classList.add('active');
+      if (a.getAttribute('onclick').includes(id)) a.classList.add('active');
     });
+    if (id === 'my') createMyRoom();
   }
 
-  function updateMap() {
-    const q = document.getElementById('destination').value.trim();
-    if (q) {
-      document.querySelector('#locationMap iframe').src = 
-        `https://www.google.com/maps/embed/v1/place?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=${encodeURIComponent(q)}`;
-    }
-  }
-
-  function generateItinerary() {
-    const dest = document.getElementById('destination').value || "夢想之地";
-    const days = parseInt(document.getElementById('days').value) || 3;
-    const list = document.getElementById('itineraryList');
-    list.innerHTML = "";
-    for(let i=1; i<=days; i++) {
-      addItem(`第 ${i} 天 ⋅ ${dest} 探索`);
-    }
-    updateMap();
-  }
-
-  function getAIAttractions() {
-    const items = ["清境農場","太魯閣","阿里山","墾丁","九份","日月潭","花蓮海洋公園"];
-    items.forEach(name => addItem(name));
-  }
-
-  function addItem(text) {
-    const list = document.getElementById('itineraryList');
-    const div = document.createElement('div');
-    div.className = "itinerary-item";
-    div.draggable = true;
-    div.innerHTML = `<span class="drag-handle">⋮⋮</span><span>${text}</span>`;
-    div.ondragstart = () => dragged = div;
-    div.ondragover = e => e.preventDefault();
-    div.ondrop = e => {
-      e.preventDefault();
-      if (dragged && dragged !== div) {
-        const rect = div.getBoundingClientRect();
-        if (e.clientY < rect.top + rect.height/2) {
-          list.insertBefore(dragged, div);
-        } else {
-          list.insertBefore(dragged, div.nextSibling);
-        }
-      }
-    };
-    list.appendChild(div);
-  }
-  let dragged = null;
-
-  // 共編基本功能（一定會動）
-  function createRoom() {
+  function createMyRoom() {
     const code = Math.random().toString(36).substring(2,8).toUpperCase();
-    document.getElementById('roomId').value = code;
-    joinRoom();
-  }
-  function joinRoom() {
-    const code = document.getElementById('roomId').value.trim().toUpperCase();
-    if (!code) return alert("請輸入房間代碼");
-    document.getElementById('currentRoom').textContent = code;
-    alert("已加入房間：" + code + "\n快把代碼傳給旅伴！");
-  }
-  function setNickname() {
-    alert("暱稱已設定（實際多人要接 presence 功能，這裡先示範）");
+    currentRoom = code;
+    document.getElementById('myCode').textContent = code;
+    setupRoom(code, 'itineraryList', 'locationMap', 'onlineCount1');
   }
 
-  // 開啟頁面時預設地圖
+  function joinRoom() {
+    let code = document.getElementById('codeInput').value.trim().toUpperCase();
+    if (code.length !== 6) return alert("代碼要是6碼喔！");
+    currentRoom = code;
+    document.getElementById('friendCode').textContent = code;
+    document.getElementById('joinMsg').innerHTML = "<p style='color:green'>成功加入房間！</p>";
+    document.getElementById('friendRoom').style.display = "block";
+    setupRoom(code, 'friendList', 'friendMap', 'onlineCount2');
+  }
+
+  function setupRoom(code, listId, mapId, countId) {
+    const roomRef = db.ref('rooms/' + code);
+    
+    // 監聽行程
+    roomRef.child('items').on('value', snap => {
+      const items = snap.val() || [];
+      const list = document.getElementById(listId);
+      list.innerHTML = "";
+      items.forEach((text, i) => {
+        const div = document.createElement('div');
+        div.className = "itinerary-item";
+        div.draggable = true;
+        div.innerHTML = `<span class="drag-handle">⋮⋮</span><span>${text}</span>`;
+        div.ondragstart = () => dragged = div;
+        div.ondragover = e => e.preventDefault();
+        div.ondrop = e => {
+          e.preventDefault();
+          if (dragged && dragged !== div) {
+            const all = [...list.children];
+            const from = all.indexOf(dragged);
+            const to = all.indexOf(div);
+            const newItems = [...items];
+            newItems.splice(to, 0, newItems.splice(from, 1)[0]);
+            roomRef.child('items').set(newItems);
+          }
+        };
+        list.appendChild(div);
+      });
+    });
+
+    // 監聽目的地 & 地圖
+    roomRef.child('dest').on('value', snap => {
+      const dest = snap.val() || "日本";
+      document.querySelectorAll('input[type=text]')[0]?.setAttribute('value', dest);
+      document.querySelector(`#${mapId} iframe`).src = 
+        `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(dest + " 日本")}&key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY`;
+    });
+
+    // 監聽上線人數
+    roomRef.child('online').on('value', snap => {
+      const users = snap.val() || {};
+      const count = Object.keys(users).length;
+      document.getElementById(countId).textContent = count;
+    });
+
+    // 我上線
+    const userRef = roomRef.child('online').push();
+    userRef.set(myName);
+    userRef.onDisconnect().remove();
+
+    // 儲存功能
+    window.saveData = () => {
+      if (!currentRoom) return;
+      const dest = document.getElementById('dest')?.value || "";
+      roomRef.child('dest').set(dest);
+    };
+  }
+
+  function aiJapan() {
+    const spots = ["東京 → 箱根溫泉","富士山五合目","河口湖","伊豆半島","名古屋","京都伏見稻荷","嵐山竹林","奈良公園","大阪心齋橋","神戶牛晚餐"];
+    db.ref('rooms/' + currentRoom + '/items').set(spots);
+    document.getElementById('dest').value = "2026 日本自駕全路線";
+    saveData();
+  }
+
+  let dragged = null;
   window.onload = () => {
-    document.querySelector('#locationMap iframe').src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=台灣";
+    document.querySelector('#locationMap iframe').src = "https://www.google.com/maps/embed/v1/place?q=Japan&key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY";
   };
 </script>
 </body>
