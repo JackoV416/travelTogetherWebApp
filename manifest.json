@@ -1,0 +1,15 @@
+{
+  "name": "一起旅行 - 共編神器",
+  "short_name": "一起旅行",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
