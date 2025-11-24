@@ -13,41 +13,27 @@
     :root{--bg:#FAF9F6;--card:#FFF;--accent:#8B7E6A;--text:#333;--soft:#B8A89A}
     body.dark{--bg:#121212;--card:#1e1e1e;--accent:#D4C2A9;--text:#f0f0f0;--soft:#B89A7A}
     *{margin:0;padding:0;box-sizing:border-box}
-    body{background:var(--bg);color:var(--text);font-family:'Noto Serif TC',serif;font-size:16px;line-height:1.8;transition:all .3s}
-    header{background:var(--accent);color:white;padding:18px 15px;text-align:center;position:fixed;top:0;width:100%;z-index:1000}
+    body{background:var(--bg);color:var(--text);font-family:'Noto Serif TC',serif;font-size:16px;line-height:1.8;transition:0.3s}
+    header{background:var(--accent);color:white;padding:20px;text-align:center;position:fixed;width:100%;top:0;z-index:1000}
     header h1{font-family:'ZCOOL XiaoWei',serif;font-size:28px;letter-spacing:3px}
-    .moon{position:absolute;top:18px;right:18px;font-size:26px;cursor:pointer}
-    
-    /* 導航列搬到內容中間（像 Instagram） */
-    .tab-bar{background:var(--card);position:fixed;top:70px;left:0;right:0;z-index:999;display:flex;border-bottom:1px solid #ddd}
-    body.dark .tab-bar{border-bottom-color:#444;background:#222}
-    .tab-bar button{flex:1;padding:14px;font-size:14px;background:none;border:none;color:var(--text);opacity:0.6}
-    .tab-bar button.active{opacity:1;border-bottom:3px solid var(--accent);font-weight:600}
-    
-    main{padding:130px 15px 40px;max-width:1000px;margin:0 auto}
-    .card{background:var(--card);border-radius:20px;padding:28px;margin:20px 0;box-shadow:0 10px 30px rgba(0,0,0,0.12)}
-    h2{color:var(--accent);font-size:26px;text-align:center;margin-bottom:20px}
-    input,button{width:100%;padding:16px;margin:12px 0;border:none;border-radius:16px;font-size:17px}
-    input{background:#f0f0f0;color:var(--text)}
-    body.dark input{background:#333;color:#fff}
-    button{background:var(--accent);color:white;cursor:pointer;font-weight:600}
-    .room-code{font-size:40px;letter-spacing:10px;color:var(--accent);margin:25px 0;text-align:center}
-    
-    .day-card{background:#f9f9f9;border-radius:16px;padding:20px;margin:20px 0}
+    .moon{position:absolute;top:22px;right:20px;font-size:24px;cursor:pointer}
+    main{padding:90px 15px 100px;max-width:900px;margin:0 auto}
+    .card{background:var(--card);border-radius:20px;padding:30px;margin:20px 0;box-shadow:0 10px 30px rgba(0,0,0,0.12)}
+    h2{color:var(--accent);font-size:26px;text-align:center;margin-bottom:25px}
+    input,select,textarea{width:100%;padding:16px;margin:10px 0;border:none;border-radius:16px;font-size:17px;background:#f0f0f0;color:var(--text)}
+    body.dark input,body.dark select,body.dark textarea{background:#333;color:#fff}
+    button{background:var(--accent);color:white;padding:18px;border:none;border-radius:20px;font-size:18px;cursor:pointer;font-weight:600;margin:20px auto;display:block;width:90%}
+    .nav-btn{background:var(--accent);color:white;padding:10px 20px;border-radius:12px;font-size:14px;text-decoration:none;display:inline-block;margin-top:10px}
+    .day-card{background:#f9f9f9;border-radius:16px;padding:22px;margin:20px 0}
     body.dark .day-card{background:#2a2a2a}
-    .cat{padding:16px;background:var(--card);border-left:5px solid var(--accent);border-radius:10px;margin:10px 0;position:relative;box-shadow:0 4px 15px rgba(0,0,0,0.08)}
-    .nav-btn{
-      position:absolute;right:10px;bottom:10px;
-      background:var(--accent);color:white;padding:10px 20px;border-radius:12px;
-      font-size:14px;text-decoration:none;font-weight:600;z-index:10;
-    }
-    .highlight{padding:4px 10px;border-radius:6px;color:white;font-weight:bold;font-size:13px;margin:2px;display:inline-block}
-    .must-eat{background:#4caf50}
-    .must-buy{background:#ff9800}
-    .res{background:#f44336}
+    .cat{padding:16px;background:var(--card);border-left:5px solid var(--accent);border-radius:10px;margin:10px 0;position:relative}
+    .highlight{padding:5px 12px;border-radius:8px;color:white;font-weight:bold;margin:3px;font-size:14px;display:inline-block}
+    .must-eat{background:#4caf50}.must-buy{background:#ff9800}.res{background:#f44336}
     .weather{background:var(--soft);color:white;padding:10px;border-radius:10px;text-align:center;margin-bottom:15px}
-    .online{text-align:center;margin:15px 0;color:var(--soft);font-size:15px}
-    #totalHKD{font-size:30px;font-weight:bold;text-align:center;margin:30px 0;color:#4caf50}
+    #totalHKD{font-size:32px;font-weight:bold;text-align:center;margin:30px 0;color:#4caf50}
+    .bottom-nav{position:fixed;bottom:0;left:0;width:100%;background:var(--accent);display:flex;z-index:999}
+    .bottom-nav button{flex:1;padding:16px;color:white;background:transparent;border:none;font-size:13px}
+    .bottom-nav button.active{background:rgba(255,255,255,0.2)}
   </style>
 </head>
 <body>
@@ -57,62 +43,60 @@
   <div class="moon" onclick="document.body.classList.toggle('dark')">Moon</div>
 </header>
 
-<!-- 導航列在內容上方中間（不再遮擋） -->
-<div class="tab-bar">
-  <button class="active" onclick="openTab('home')">首頁</button>
-  <button onclick="openTab('plan')">行程規劃</button>
-  <button onclick="openTab('flight')">航班住宿</button>
-  <button onclick="openTab('emergency')">緊急聯絡</button>
-  <button onclick="openTab('budget')">預算</button>
-</div>
-
 <main>
-  <!-- 1. 首頁 -->
-  <div id="home" class="tab-content active">
+  <!-- 第一步：建立行程表單 -->
+  <div id="createForm" class="tab active">
     <div class="card">
-      <h2>歡迎來到一起旅行</h2>
-      <p style="text-align:center;font-size:18px;margin:30px 0">專為日本自駕設計的多人共編神器</p>
-      <div style="background:#f0f0f0;padding:25px;border-radius:16px;margin:30px 0;font-size:15px;line-height:1.9">
-        <strong>功能亮點：</strong><br>
-        • 每日行程自動分類 + 一鍵導航<br>
-        • 必吃必買攻略自動標色<br>
-        • 港幣・日圓・台幣記帳，總結自動換算港幣<br>
-        • 航班、住宿、香港緊急電話<br>
-        • 6 碼分享，家人即時一起編
-      </div>
-      <div style="text-align:center">
-        <button onclick="createRoom()">建立新行程</button>
-        <input type="text" id="codeInput" placeholder="輸入6碼加入行程" maxlength="6" style="letter-spacing:8px;font-size:24px">
-        <button onclick="joinRoom(document.getElementById('codeInput').value)" style="background:#666">加入</button>
-      </div>
+      <h2>建立全新旅行行程</h2>
+      <input type="text" id="countries" placeholder="旅行國家（可多個，例如：日本、韓國）">
+      <input type="text" id="cities" placeholder="主要城市（可多個）">
+      <input type="number" id="people" placeholder="旅程人數" min="1">
+      <input type="text" id="dates" placeholder="旅行日期（例：2026年3月15-22日）">
+      
+      <h3 style="margin:20px 0 10px">航班資訊</h3>
+      <input type="text" id="flight" placeholder="去程航班編號（例：CX520）" onblur="fetchFlight(this.value)">
+      <input type="text" id="flightBack" placeholder="回程航班編號（選填）" onblur="fetchFlight(this.value)">
+      <input type="text" id="friendFlight" placeholder="朋友航班編號（選填）">
+      
+      <h3 style="margin:20px 0 10px">住宿資訊</h3>
+      <textarea id="hotel" placeholder="酒店名稱、地址、入住日期、價格（可寫多個）" rows="4"></textarea>
+      
+      <h3 style="margin:20px 0 10px">交通方式</h3>
+      <select id="transport"><option>自駕</option><option>JR Pass</option><option>高鐵</option><option>包車</option></select>
+      
+      <button onclick="finishCreate()">完成製作 → 進入美美行程頁</button>
     </div>
   </div>
 
-  <!-- 2. 行程規劃 -->
-  <div id="plan" class="tab-content">
+  <!-- 第二步：Threads 風格卡片頁面 -->
+  <div id="tripView" class="tab" style="display:none">
     <div class="card">
-      <div style="text-align:center;margin:20px 0">
-        <div class="room-code" id="roomCode">------</div>
-        <p class="online">目前 <span id="onlineCount">1</span> 人編輯中</p>
-        <button onclick="generateSample()" style="background:#4caf50">AI 生成日本自駕範例</button>
+      <div style="text-align:center;margin-bottom:20px">
+        <h2 id="tripTitle">日本自駕 8 日遊</h2>
+        <p>東京 → 箱根 → 富士山 → 京都 → 大阪</p>
+        <p class="online">目前 <span id="onlineCount">1</span> 人編輯中 • 房間代碼：<span id="roomCode">------</span></p>
       </div>
-      <div id="itinerary"></div>
+      <div id="itineraryCards"></div>
     </div>
   </div>
 
-  <!-- 3. 航班住宿、4. 緊急聯絡、5. 預算（內容不變） -->
-  <div id="flight" class="tab-content">…（內容同前幾版）</div>
-  <div id="emergency" class="tab-content">…（內容同前幾版）</div>
-  <div id="budget" class="tab-content">
+  <!-- 預算頁 -->
+  <div id="budgetPage" class="tab" style="display:none">
     <div class="card">
-      <h2>行程預算（自動換算港幣）</h2>
-      <div style="margin:15px 0"><input type="number" id="hkd" placeholder="港幣 HKD" oninput="calc()"></div>
-      <div style="margin:15px 0"><input type="number" id="jpy" placeholder="日圓 JPY" oninput="calc()"></div>
-      <div style="margin:15px 0"><input type="number" id="twd" placeholder="台幣 TWD" oninput="calc()"></div>
+      <h2>行程總預算</h2>
+      <input type="number" placeholder="港幣 HKD" id="hkd" oninput="calc()">
+      <input type="number" placeholder="日圓 JPY" id="jpy" oninput="calc()">
+      <input type="number" placeholder="台幣 TWD" id="twd" oninput="calc()">
       <div id="totalHKD">總計：0 HKD</div>
     </div>
   </div>
 </main>
+
+<div class="bottom-nav">
+  <button class="active" onclick="show('createForm')">建立</button>
+  <button onclick="show('tripView')">行程</button>
+  <button onclick="show('budgetPage')">預算</button>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -121,60 +105,96 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
   let roomRef = null;
-  let currentRoom = localStorage.getItem('lastRoom') || null;
+  let currentRoom = null;
 
-  function openTab(id){
-    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.querySelectorAll('.tab-bar button').forEach(b=>b.classList.remove('active'));
-    document.querySelector(`.tab-bar button[onclick="openTab('${id}')"]`).classList.add('active');
-    if(id!=='home' && !currentRoom) alert("請先建立或加入行程！");
+  function show(id){
+    document.querySelectorAll('.tab').forEach(t=>t.style.display='none');
+    document.getElementById(id).style.display='block';
+    document.querySelectorAll('.bottom-nav button').forEach((b,i)=>b.classList.toggle('active', i===['createForm','tripView','budgetPage'].indexOf(id)));
   }
 
-  function createRoom(){ currentRoom = Math.random().toString(36).substring(2,8).toUpperCase(); joinRoom(currentRoom); }
-  function joinRoom(code){
-    if(code) currentRoom = code.toUpperCase();
-    if(currentRoom.length!==6) return alert("請輸入正確6碼");
+  function finishCreate(){
+    const countries = document.getElementById('countries').value || '日本';
+    currentRoom = Math.random().toString(36).substring(2,8).toUpperCase();
     roomRef = db.ref('trips/'+currentRoom);
+    
+    document.getElementById('tripTitle').textContent = countries + ' 自駕旅行';
     document.getElementById('roomCode').textContent = currentRoom;
-    localStorage.setItem('lastRoom', currentRoom);
-    openTab('plan');
-    loadAll(); setupOnline();
-  }
-  document.getElementById('codeInput').addEventListener('keypress',e=>{if(e.key==='Enter') joinRoom(e.target.value);});
-
-  function renderItinerary(data){
-    let html = '';
-    const days = {};
-    data.forEach(i=>{ if(!days[i.day]) days[i.day]={loc:i.loc,items:{景點:[],餐廳:[],交通:[]}}; days[i.day].items[i.cat].push(i); });
-    Object.keys(days).sort((a,b)=>a-b).forEach(d=>{
-      const day = days[d];
-      html += `<div class="day-card">
-        <h3>第${d}天 - ${day.loc}<div class="weather">晴 18°C</div></h3>`;
-      ['景點','餐廳','交通'].forEach(c=>{
-        if(day.items[c].length>0){
-          html += `<h4>${c}</h4>`;
-          day.items[c].forEach(i=>{
-            const dest = encodeURIComponent(i.title + ' ' + day.loc + ' 日本');
-            html += `<div class="cat">
-              <strong>${i.title}</strong><br>${i.story}<br>
-              ${i.mustEat?`<span class="highlight must-eat">必吃 ${i.mustEat}</span>`:''}
-              ${i.mustBuy?`<span class="highlight must-buy">必買 ${i.mustBuy}</span>`:''}
-              ${i.res?`<span class="highlight res">需預約</span>`:''}
-              <a href="https://www.google.com/maps/dir/?api=1&destination=${dest}&travelmode=driving" 
-                 class="nav-btn" target="_blank" rel="noopener">導航</a>
-            </div>`;
-          });
-        }
-      });
-      html += `</div>`;
+    
+    // 存基本資訊
+    roomRef.set({
+      info: {
+        countries: document.getElementById('countries').value,
+        cities: document.getElementById('cities').value,
+        people: document.getElementById('people').value,
+        dates: document.getElementById('dates').value,
+        flight: document.getElementById('flight').value,
+        hotel: document.getElementById('hotel').value,
+        transport: document.getElementById('transport').value
+      },
+      itinerary: sampleItinerary,
+      budget: {hkd:0,jpy:0,twd:0}
+    }).then(()=>{
+      show('tripView');
+      loadItinerary();
+      setupOnline();
     });
-    document.getElementById('itinerary').innerHTML = html || '<p style="text-align:center;color:#999;padding:60px 0">點上方綠色按鈕生成範例行程</p>';
   }
 
-  // calc()、generateSample()、loadAll()、setupOnline() 完全保留（略）
+  const sampleItinerary = [
+    {day:1,loc:"東京",cat:"景點",title:"淺草寺",story:"東京最古老寺廟，雷門超好拍",mustEat:"人形燒",mustBuy:"招財貓"},
+    {day:1,loc:"東京",cat:"餐廳",title:"壽喜燒老店",story:"A5和牛壽喜燒",mustEat:"壽喜燒套餐",res:"需預約"},
+    {day:2,loc:"箱根",cat:"景點",title:"大涌谷",story:"吃黑蛋增壽七年",mustEat:"黑玉子",mustBuy:"溫泉饅頭"},
+    // ... 更多範例
+  ];
 
-  if(currentRoom) joinRoom(currentRoom);
+  function loadItinerary(){
+    roomRef.child('itinerary').on('value', s=>{
+      const data = s.val() || sampleItinerary;
+      let html = '';
+      const days = {};
+      data.forEach(i=>{ if(!days[i.day]) days[i.day]={loc:i.loc,items:{景點:[],餐廳:[],交通:[]}}; days[i.day].items[i.cat].push(i); });
+      Object.keys(days).sort((a,b)=>a-b).forEach(d=>{
+        const day = days[d];
+        html += `<div class="day-card">
+          <h3>第${d}天 - ${day.loc}<div class="weather">晴 18°C</div></h3>`;
+        ['景點','餐廳','交通'].forEach(c=>{
+          if(day.items[c].length>0){
+            html += `<h4>${c}</h4>`;
+            day.items[c].forEach(i=>{
+              const dest = encodeURIComponent(i.title + ' ' + day.loc + ' 日本');
+              html += `<div class="cat">
+                <strong>${i.title}</strong><br>${i.story}<br>
+                ${i.mustEat?`<span class="highlight must-eat">必吃 ${i.mustEat}</span>`:''}
+                ${i.mustBuy?`<span class="highlight must-buy">必買 ${i.mustBuy}</span>`:''}
+                ${i.res?`<span class="highlight res">需預約</span>`:''}
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${dest}&travelmode=driving" 
+                   class="nav-btn" target="_blank" rel="noopener">自駕導航</a>
+              </div>`;
+            });
+          }
+        });
+        html += `</div>`;
+      });
+      document.getElementById('itineraryCards').innerHTML = html;
+    });
+  }
+
+  function calc(){
+    const hkd = parseFloat(document.getElementById('hkd').value)||0;
+    const jpy = parseFloat(document.getElementById('jpy').value)||0;
+    const twd = parseFloat(document.getElementById('twd').value)||0;
+    const total = hkd + jpy/19.6 + twd/4.11;
+    document.getElementById('totalHKD').textContent = `總計：${total.toFixed(0)} HKD`;
+  }
+
+  function setupOnline(){
+    const online = roomRef.child('online').push();
+    online.set(true); online.onDisconnect().remove();
+    roomRef.child('online').on('value', s=>{
+      document.getElementById('onlineCount').textContent = Object.keys(s.val()||{}).length;
+    });
+  }
 </script>
 </body>
 </html>
