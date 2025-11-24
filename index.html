@@ -126,3 +126,54 @@
     }
 
     // AI推薦景點（直接加到行程）
+    async function getAIAttractions() {
+      const city = document.getElementById('destination').value || "台北";
+      const list = document.getElementById('itineraryList');
+      const attractions = ["京都御所", "清水寺", "伏見稻荷大社", "金閣寺", "嵐山竹林", "哲學之道", "鴨川散步"];
+      
+      attractions.slice(0, 5).forEach(attr => {
+        const item = document.createElement('div');
+        item.className = "itinerary-item";
+        item.draggable = true;
+        item.innerHTML = `<span class="drag-handle">⋮⋮</span><span>${attr}</span>`;
+        item.ondragstart = dragStart;
+        item.ondragover = dragOver;
+        item.ondrop = drop;
+        list.appendChild(item);
+        itineraryOrder.push(item);
+      });
+      saveData();
+    }
+
+    // 拖曳功能
+    let draggedItem = null;
+    function dragStart(e) { draggedItem = this; this.classList.add('dragging'); }
+    function dragOver(e) { e.preventDefault(); }
+    function drop(e) {
+      e.preventDefault();
+      if (draggedItem !== this) {
+        const allItems = [...document.querySelectorAll('.itinerary-item')];
+        const fromIndex = allItems.indexOf(draggedItem);
+        const toIndex = allItems.indexOf(this);
+        if (fromIndex < toIndex) this.after(draggedItem);
+        else this.before(draggedItem);
+      }
+      draggedItem.classList.remove('dragging');
+      saveData();
+    }
+
+    function saveData() {
+      if (!currentRoom) return;
+      const data = { /* 所有欄位 + itineraryHTML: document.getElementById('itineraryList').innerHTML */ };
+      // 完整 saveData 請保留你原本的邏輯
+    }
+
+    function show(id) {
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+      document.querySelector(`nav a[onclick="show('${id}')"]`).classList.add('active');
+    }
+  </script>
+</body>
+</html>
