@@ -1,6 +1,6 @@
 {
-  "name": "一起旅行・日本自駕版",
-  "short_name": "自駕神器",
+  "name": "一起旅行",
+  "short_name": "一起旅行",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAF9F6",
