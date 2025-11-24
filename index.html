@@ -3,44 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>一起旅行・日本自駕版</title>
+  <title>一起旅行</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-512.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#8B7E6A">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#FAF9F6;--card:#FFF;--accent:#8B7E6A;--text:#3D3D3D;--soft:#B8A89A}
-    body.dark{--bg:#1F1F1F;--card:#2C2C2C;--accent:#D4C2A9;--text:#E8E8E8;--soft:#A89A8B}
+    :root{--bg:#FAF9F6;--card:#FFFFFF;--accent:#8B7E6A;--text:#333333;--soft:#B8A89A}
+    body.dark{--bg:#1a1a1a;--card:#252525;--accent:#D4C2A9;--text:#E8E8E8;--soft:#A89A8B}
     *{margin:0;padding:0;box-sizing:border-box}
-    body{background:var(--bg);color:var(--text);font-family:'Noto Serif TC',serif;font-size:16px;line-height:1.6;min-height:100vh}
-    header{background:var(--accent);color:white;padding:20px;text-align:center;position:fixed;width:100%;top:0;z-index:1000}
+    body{background:var(--bg);color:var(--text);font-family:'Noto Serif TC',serif;font-size:16px;line-height:1.8;min-height:100vh;transition:0.4s}
+    header{background:var(--accent);color:white;padding:18px 15px;text-align:center;position:fixed;width:100%;top:0;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,0.1)}
     header h1{font-family:'ZCOOL XiaoWei',serif;font-size:28px;letter-spacing:2px}
-    nav{display:flex;justify-content:center;gap:15px;margin-top:10px;flex-wrap:wrap}
-    nav a{color:white;text-decoration:none;font-size:16px;padding:10px 16px;border-radius:20px}
-    nav a.active{background:rgba(255,255,255,0.2)}
-    main{padding-top:100px;padding-bottom:60px;max-width:900px;margin:0 auto;padding:15px}
+    nav{display:flex;justify-content:center;gap:20px;margin-top:12px;flex-wrap:wrap}
+    nav a{color:white;text-decoration:none;font-size:17px;padding:8px 16px;border-radius:20px;transition:0.3s}
+    nav a.active{background:rgba(255,255,255,0.25)}
+    .moon{position:absolute;top:20px;right:20px;font-size:22px;cursor:pointer;opacity:0.9}
+    main{padding-top:100px;padding-bottom:40px;max-width:900px;margin:0 auto;padding-left:15px;padding-right:15px}
     .page{display:none}
     .page.active{display:block;animation:fade 0.5s}
-    @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
-    .card{background:var(--card);padding:30px;margin:20px 0;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1)}
-    h2{font-family:'ZCOOL XiaoWei',serif;color:var(--accent);font-size:26px;text-align:center;margin-bottom:20px}
-    input,button{width:100%;padding:16px;margin:12px 0;border:none;border-radius:16px;font-size:16px}
-    input{background:#f5f5f5;text-align:center}
-    body.dark input{background:#333;color:white}
-    button{background:var(--accent);color:white;font-weight:600;cursor:pointer;transition:0.3s}
-    button:hover{background:var(--soft)}
-    .btn-small{padding:12px 24px;width:auto;display:inline-block;margin:6px;font-size:15px;border-radius:20px}
-    .room-code{font-size:32px;font-weight:bold;color:var(--accent);letter-spacing:6px;margin:20px 0;text-align:center}
+    @keyframes fade{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+    .card{background:var(--card);padding:32px;margin:20px 0;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1)}
+    h2{font-family:'ZCOOL XiaoWei',serif;color:var(--accent);font-size:26px;text-align:center;margin-bottom:25px}
+    .tip{margin:20px 0;padding:18px;background:#f0f0f0;border-radius:14px;font-size:15px}
+    body.dark .tip{background:#333}
+    .room-code{font-size:36px;font-weight:bold;color:var(--accent);letter-spacing:8px;margin:25px 0;text-align:center}
     #itineraryList{margin:30px 0}
     .itinerary-item{background:white;padding:20px;margin:12px 0;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.1);cursor:move;font-size:16px;display:flex;align-items:center}
     body.dark .itinerary-item{background:#333}
-    .drag-handle{font-size:24px;margin-right:12px;color:#ccc;cursor:grab}
-    #locationMap{height:400px;margin:30px 0;border-radius:16px;overflow:hidden;box-shadow:0 8px 25px rgba(0,0,0,0.15);background:#f0f0f0;text-align:center;line-height:400px;font-size:18px}
-    .comments{ margin:20px 0; padding:15px; background:#f8f8f8; border-radius:12px; }
-    body.dark .comments{ background:#333; }
-    .comment-item{ padding:10px; margin:8px 0; border-left:3px solid var(--accent); padding-left:12px; font-size:14px; }
-    .online{font-size:14px;text-align:center;margin:15px 0;color:var(--soft)}
+    .drag-handle{font-size:26px;margin-right:14px;color:#ccc;cursor:grab}
+    #mapLink{display:block;margin:30px auto;padding:16px;background:var(--accent);color:white;text-align:center;border-radius:16px;text-decoration:none;font-size:17px}
+    .online{text-align:center;margin:15px 0;font-size:14px;color:var(--soft)}
   </style>
 </head>
 <body>
@@ -48,73 +42,67 @@
 <header>
   <h1>一起旅行</h1>
   <nav>
-    <a href="#" class="active" onclick="showPage('home')">首頁</a>
-    <a href="#" onclick="showPage('plan')">自駕行程</a>
-    <a href="#" onclick="showPage('share')">朋友分享</a>
+    <a href="#" class="active" onclick="go('home')">教學</a>
+    <a href="#" onclick="go('my')">我的行程</a>
+    <a href="#" onclick="go('share')">朋友分享</a>
   </nav>
+  <div class="moon" onclick="document.body.classList.toggle('dark')">月亮</div>
 </header>
 
 <main>
-  <!-- 首頁：Threads 貼文範例 -->
+  <!-- 首頁 = 純教學（完全照你的圖片內容）-->
   <section id="home" class="page active">
     <div class="card">
-      <h2>像這樣規劃你的日本自駕</h2>
-      <p style="text-align:center;font-style:italic;margin:20px 0;font-size:15px">靈感來自 Threads 用戶 ciao_kitchen 的分享</p>
-      <div style="background:#f0f0f0;padding:20px;border-radius:12px;margin:20px 0;font-size:15px">
-        <p>"我也試了把明年的日本自駕行程丟進 Gemini 3 ... 結果生成的工具遠遠超越我的期待！直接部署到手機上超實用～全程是 Gemini 被我脅迫手把手教，一個週六的早晨從無到有生出來 + 部署完成 + 優化。AI Studio 邊寫邊上傳到 GitHub，Hosting 自動偵測版本、自動部署，圖片素材都是 Nano Banana Pro 生的，資料庫串在 Firebase 同步。最後用 Shortcut 掛個 icon 就是個臨時 App。這一切居然都是免費的。剛剛把工具傳給家人，大家都興奮起來了！這種週拋式客製 App 好方便啊～J 人的護身符。"</p>
-      </div>
-      <p style="text-align:center;font-size:18px;margin:30px 0">現在輪到你了！</p>
-      <div style="text-align:center">
-        <button class="btn-small" onclick="showPage('plan')">開始自駕規劃</button>
-        <button class="btn-small" onclick="showPage('share')">加入朋友分享</button>
-        <button class="btn-small" onclick="document.body.classList.toggle('dark')">夜間模式</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- 自駕行程頁 -->
-  <section id="plan" class="page">
-    <div class="card">
-      <h2>你的日本自駕行程</h2>
-      <div class="room-code" id="roomCode">自動產生中...</div>
-      <p class="online">目前 <span id="onlineNum">1</span> 人編輯中</p>
-      <input type="text" id="routeInput" placeholder="路線：東京 → 箱根 → 京都" oninput="saveSync()">
-      <div style="text-align:center">
-        <button onclick="aiGenerate()">AI 生成自駕路線</button>
-        <button class="btn-small" onclick="addBudget()">加預算計算</button>
-      </div>
-      <div id="itineraryList"></div>
-      <div id="locationMap">點擊生成路線後，點擊下方連結開啟 Google Maps</div>
-      <a id="mapLink" href="#" target="_blank" style="display:none;font-size:18px;text-align:center;color:var(--accent);text-decoration:none">開啟 Google Maps 導航</a>
+      <h2>這是一起旅行</h2>
+      <div class="tip">這是 pdf 版的日本自駕行程，請幫我做成在手機上瀏覽的旅遊小工具。</div>
+      <div class="tip">以下是我的個人需求：</div>
       
-      <!-- 留言板（Threads 留言靈感） -->
-      <h2 style="margin-top:30px">留言板（像 Threads 一樣討論）</h2>
-      <div class="comments">
-        <input type="text" id="commentInput" placeholder="分享想法：這條路線怎麼樣？" oninput="saveComment()">
-        <div id="commentsList"></div>
-      </div>
+      <div class="tip">視覺風格：<br>－日式極簡 × 改成任何你喜歡的風格</div>
+      <div class="tip">手機優先：在手機上閱讀舒服，版面像真正的原生 App 兼顧響應式設計。</div>
+      <div class="tip">核心功能：<br>－每日行程卡片：景點、餐廳、交通 不同卡片請分類設計。<br>－導航：請自動偵測行程中的地點加上「導航按鈕」，為了自駕方便設計。<br>－天氣預報：請在每一天的卡片上方顯示該地點的即時天氣資訊。<br>－導遊職責：請自動分析行程文字幫我額外搜尋景點故事和攻略，把「必吃美食」、「必點菜單」、「必買伴手禮」、「重要預約代號」用不同顏色的標籤或粗體標出來。</div>
+      <div class="tip">其他工具需求：<br>請做一個分頁或區塊，專門放「航班資訊」、「住宿資訊」、「緊急聯絡電話」以及「記帳/預算表」。</div>
+      <p style="text-align:center;margin-top:40px;font-size:18px">
+        <button style="padding:14px 32px;background:var(--accent);color:white;border:none;border-radius:20px;font-size:17px;cursor:pointer" onclick="go('my')">
+          立即開始規劃
+        </button>
+      </p>
     </div>
   </section>
 
-  <!-- 朋友分享頁 -->
+  <!-- 我的行程 -->
+  <section id="my" class="page">
+    <div class="card">
+      <div class="room-code" id="myCode">產生中...</div>
+      <p class="online">目前 <span id="online1">1</span> 人編輯中</p>
+      
+      <h2>日本自駕行程</h2>
+      <input type="text" id="dest" placeholder="請輸入目的地（如：東京 → 箱根 → 京都）" oninput="save()">
+      <div style="text-align:center;margin:20px 0">
+        <button onclick="aiGenerate()">AI 一鍵生成完整行程</button>
+      </div>
+      
+      <div id="itineraryList"></div>
+      
+      <a id="mapLink" href="#" target="_blank" style="display:none">開啟 Google Maps 自駕導航</a>
+    </div>
+  </section>
+
+  <!-- 朋友分享 -->
   <section id="share" class="page">
     <div class="card">
-      <h2>加入朋友的自駕分享</h2>
-      <input type="text" id="shareCode" placeholder="輸入 6 碼分享碼" style="font-size:18px;letter-spacing:4px">
-      <button onclick="joinShare()">加入</button>
-      <p id="shareStatus" style="text-align:center;margin:20px 0"></p>
-      <div id="sharedContent" style="display:none">
+      <h2>輸入朋友給你的代碼</h2>
+      <input type="text" id="codeIn" placeholder="例如 AB3D5F" style="text-align:center;font-size:20px;letter-spacing:5px">
+      <button onclick="join()">加入行程</button>
+      <p id="msg" style="text-align:center;margin:20px 0"></p>
+      <div id="shared" style="display:none">
         <div class="room-code" id="sharedCode"></div>
-        <p class="online">目前 <span id="sharedOnline">0</span> 人編輯中</p>
+        <p class="online">目前 <span id="online2">0</span> 人編輯中</p>
         <div id="sharedList"></div>
-        <div id="sharedMap">路線同步中...</div>
-        <div id="sharedComments"></div>
       </div>
     </div>
   </section>
 </main>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <script>
@@ -122,148 +110,93 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  let currentRoomId = null;
-  let userId = Math.random().toString(36).substr(2,9);
+  let room = null;
 
-  function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-    document.querySelector(`nav a[onclick="showPage('${id}')"]`).classList.add('active');
-    if (id === 'plan') initRoom();
+  function go(p) {
+    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+    document.getElementById(p).classList.add('active');
+    document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+    document.querySelector(`nav a[onclick="go('${p}')"]`).classList.add('active');
+    if(p==='my') initRoom();
   }
 
   function initRoom() {
-    currentRoomId = Math.random().toString(36).substring(2,8).toUpperCase();
-    document.getElementById('roomCode').textContent = currentRoomId;
-    setupSync(currentRoomId, 'plan');
+    room = Math.random().toString(36).substring(2,8).toUpperCase();
+    document.getElementById('myCode').textContent = room;
+    setup(room, 'itineraryList', 'online1');
   }
 
-  function joinShare() {
-    const code = document.getElementById('shareCode').value.trim().toUpperCase();
-    if (code.length !== 6) return document.getElementById('shareStatus').innerHTML = '<p style="color:red">碼要 6 碼！</p>';
-    currentRoomId = code;
-    document.getElementById('sharedCode').textContent = code;
-    document.getElementById('shareStatus').innerHTML = '<p style="color:green">加入成功！</p>';
-    document.getElementById('sharedContent').style.display = 'block';
-    setupSync(code, 'share');
+  function join() {
+    room = document.getElementById('codeIn').value.trim().toUpperCase();
+    if(room.length!==6) return document.getElementById('msg').innerHTML = '<p style="color:red">請輸入6碼</p>';
+    document.getElementById('sharedCode').textContent = room;
+    document.getElementById('msg').innerHTML = '<p style="color:green">加入成功！</p>';
+    document.getElementById('shared').style.display = 'block';
+    setup(room, 'sharedList', 'online2');
   }
 
-  function setupSync(room, mode) {
-    const roomRef = db.ref('rooms/' + room);
-    const listId = mode === 'plan' ? 'itineraryList' : 'sharedList';
-    const mapId = mode === 'plan' ? 'locationMap' : 'sharedMap';
-    const commentId = mode === 'plan' ? 'commentsList' : 'sharedComments';
-    const onlineId = mode === 'plan' ? 'onlineNum' : 'sharedOnline';
-
-    // 同步行程
-    roomRef.child('itinerary').on('value', snap => {
-      const items = snap.val() || [];
+  function setup(r, listId, onlineId) {
+    const ref = db.ref('rooms/'+r);
+    
+    ref.child('items').on('value', s => {
+      const items = s.val() || [];
       const list = document.getElementById(listId);
       list.innerHTML = '';
-      items.forEach(text => {
+      items.forEach(t => {
         const div = document.createElement('div');
         div.className = 'itinerary-item';
-        div.innerHTML = `<span class="drag-handle">⋮⋮</span><span>${text}</span>`;
         div.draggable = true;
-        div.ondragstart = () => { draggedItem = div; };
+        div.innerHTML = `<span class="drag-handle">⋮⋮</span><span>${t}</span>`;
+        div.ondragstart = () => dragged = div;
         div.ondragover = e => e.preventDefault();
         div.ondrop = e => {
           e.preventDefault();
-          if (draggedItem && draggedItem !== div) {
-            const allItems = [...list.children];
-            const fromIdx = allItems.indexOf(draggedItem);
-            const toIdx = allItems.indexOf(div);
-            const newItems = [...items];
-            const [moved] = newItems.splice(fromIdx, 1);
-            newItems.splice(toIdx, 0, moved);
-            roomRef.child('itinerary').set(newItems);
+          if(dragged && dragged !== div) {
+            const all = [...list.children];
+            const from = all.indexOf(dragged);
+            const to = all.indexOf(div);
+            const arr = [...items];
+            arr.splice(to, 0, arr.splice(from,1)[0]);
+            ref.child('items').set(arr);
           }
         };
         list.appendChild(div);
       });
     });
 
-    // 同步路線 & 地圖連結
-    roomRef.child('route').on('value', snap => {
-      const route = snap.val() || '';
-      const input = document.getElementById(mode === 'plan' ? 'routeInput' : 'shareCode');
-      if (input) input.value = route;
-      const mapLink = document.getElementById('mapLink') || document.createElement('a');
-      mapLink.href = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(route.split(' → ')[0])}&destination=${encodeURIComponent(route.split(' → ').pop())}&travelmode=driving`;
-      mapLink.textContent = '開啟 Google Maps 自駕導航';
-      mapLink.style.display = route ? 'block' : 'none';
-      document.getElementById(mapId).appendChild(mapLink);
-    });
-
-    // 同步留言
-    roomRef.child('comments').on('value', snap => {
-      const comments = snap.val() || [];
-      const commentList = document.getElementById(commentId);
-      commentList.innerHTML = '';
-      comments.forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'comment-item';
-        div.innerHTML = `<strong>${c.user}:</strong> ${c.text} <small>(${new Date(c.time).toLocaleString()})</small>`;
-        commentList.appendChild(div);
-      });
-    });
-
-    // 上線同步
-    roomRef.child('online').on('value', snap => {
-      const users = snap.val() || {};
-      document.getElementById(onlineId).textContent = Object.keys(users).length;
-    });
-
-    // 自動離線
-    const myOnlineRef = roomRef.child('online').push();
-    myOnlineRef.set({ user: myName, time: Date.now() });
-    myOnlineRef.onDisconnect().remove();
-
-    // 儲存函數
-    window.saveSync = () => {
-      if (!currentRoomId) return;
-      const route = document.getElementById('routeInput') ? document.getElementById('routeInput').value : '';
-      roomRef.child('route').set(route);
-    };
-
-    window.saveComment = () => {
-      if (!currentRoomId) return;
-      const text = document.getElementById('commentInput').value.trim();
-      if (text) {
-        roomRef.child('comments').push({ user: myName, text, time: Date.now() });
-        document.getElementById('commentInput').value = '';
+    ref.child('dest').on('value', s => {
+      const d = s.val()||'';
+      if(document.getElementById('dest')) document.getElementById('dest').value = d;
+      const link = document.getElementById('mapLink');
+      if(d && link) {
+        link.href = `https://www.google.com/maps/dir/?api=1&waypoints=${encodeURIComponent(d)}&travelmode=driving`;
+        link.style.display = 'block';
       }
-    };
+    });
+
+    ref.child('online').on('value', s => {
+      document.getElementById(onlineId).textContent = Object.keys(s.val()||{}).length;
+    });
+
+    const me = ref.child('online').push();
+    me.set(true); me.onDisconnect().remove();
   }
 
-  // AI 生成自駕路線
+  function save() {
+    if(!room) return;
+    const d = document.getElementById('dest').value;
+    db.ref('rooms/'+room+'/dest').set(d);
+  }
+
   function aiGenerate() {
-    const routes = ['東京 → 箱根溫泉 → 富士山 → 京都', '大阪 → 奈良 → 京都 → 箱根 → 東京', '名古屋 → 伊勢神宮 → 京都 → 大阪'];
-    const randomRoute = routes[Math.floor(Math.random() * routes.length)];
-    document.getElementById('routeInput').value = randomRoute;
-    saveSync();
-    // 模擬 Firebase 更新行程
-    const spots = randomRoute.split(' → ').map(s => s + ' 探索');
-    db.ref('rooms/' + currentRoomId + '/itinerary').set(spots);
+    const full = ["東京 淺草寺","箱根 大涌谷","富士山五合目","河口湖","伊豆 修善寺","名古屋 熱田神宮","京都 金閣寺","奈良公園","大阪 道頓堀","神戶 異人館街"];
+    db.ref('rooms/'+room+'/items').set(full);
+    document.getElementById('dest').value = "東京 → 箱根 → 富士山 → 京都 → 大阪";
+    save();
   }
 
-  // 加預算計算（留言靈感）
-  function addBudget() {
-    const budgetInput = prompt('輸入預算總額 (NTD)');
-    if (budgetInput) {
-      const comments = document.getElementById('commentsList');
-      const div = document.createElement('div');
-      div.className = 'comment-item';
-      div.innerHTML = `<strong>系統:</strong> 預算設定 ${budgetInput} 元（油費/住宿/餐飲自動分攤）`;
-      comments.appendChild(div);
-      saveComment(); // 觸發同步
-    }
-  }
-
-  let draggedItem = null;
-
-  window.onload = () => showPage('home');
+  let dragged = null;
+  window.onload = () => go('home');
 </script>
 </body>
 </html>
