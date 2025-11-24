@@ -16,91 +16,109 @@
     body{background:var(--bg);color:var(--text);font-family:'Noto Serif TC',serif;font-size:16px;line-height:1.8;min-height:100vh;transition:0.4s}
     header{background:var(--accent);color:white;padding:18px 15px;text-align:center;position:fixed;width:100%;top:0;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,0.1)}
     header h1{font-family:'ZCOOL XiaoWei',serif;font-size:28px;letter-spacing:2px}
-    nav{display:flex;justify-content:center;gap:20px;margin-top:12px;flex-wrap:wrap}
-    nav a{color:white;text-decoration:none;font-size:17px;padding:8px 16px;border-radius:20px;transition:0.3s}
-    nav a.active{background:rgba(255,255,255,0.25)}
     .moon{position:absolute;top:20px;right:20px;font-size:22px;cursor:pointer;opacity:0.9}
-    main{padding-top:100px;padding-bottom:40px;max-width:900px;margin:0 auto;padding-left:15px;padding-right:15px}
-    .page{display:none}
-    .page.active{display:block;animation:fade 0.5s}
-    @keyframes fade{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+    main{padding-top:100px;padding-bottom:60px;max-width:900px;margin:0 auto;padding-left:15px;padding-right:15px}
     .card{background:var(--card);padding:32px;margin:20px 0;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1)}
     h2{font-family:'ZCOOL XiaoWei',serif;color:var(--accent);font-size:26px;text-align:center;margin-bottom:25px}
+    h3{font-size:20px;color:var(--accent);margin:20px 0 10px}
+    .day-card{margin:25px 0;padding:20px;background:#f9f9f9;border-radius:14px}
+    body.dark .day-card{background:#333}
+    .category{padding:14px;margin:10px 0;border-left:5px solid var(--accent);background:white;border-radius:10px}
+    body.dark .category{background:#444}
+    .nav-btn{background:var(--accent);color:white;padding:8px 16px;border-radius:8px;text-decoration:none;margin:5px;font-size:14px;display:inline-block}
+    .weather{background:var(--soft);color:white;padding:10px;border-radius:8px;margin-bottom:15px;text-align:center}
+    .highlight{font-weight:bold;padding:3px 8px;border-radius:4px;margin:2px;font-size:14px}
+    .must-eat{background:#4caf50;color:white}
+    .must-buy{background:#ff9800;color:white}
+    .reservation{background:#f44336;color:white}
     .tip{margin:20px 0;padding:18px;background:#f0f0f0;border-radius:14px;font-size:15px}
     body.dark .tip{background:#333}
     .room-code{font-size:36px;font-weight:bold;color:var(--accent);letter-spacing:8px;margin:25px 0;text-align:center}
-    #itineraryList{margin:30px 0}
-    .itinerary-item{background:white;padding:20px;margin:12px 0;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,0.1);cursor:move;font-size:16px;display:flex;align-items:center}
-    body.dark .itinerary-item{background:#333}
-    .drag-handle{font-size:26px;margin-right:14px;color:#ccc;cursor:grab}
-    #mapLink{display:block;margin:30px auto;padding:16px;background:var(--accent);color:white;text-align:center;border-radius:16px;text-decoration:none;font-size:17px}
     .online{text-align:center;margin:15px 0;font-size:14px;color:var(--soft)}
+    input,button,select{width:100%;padding:14px;margin:8px 0;border:none;border-radius:12px;font-size:16px}
+    input,select{background:#f5f5f5}
+    body.dark input,body.dark select{background:#333;color:white}
+    button{background:var(--accent);color:white;font-weight:600;cursor:pointer}
+    .currency-grid{display:grid;grid-template-columns:2fr 1fr;gap:10px;align-items:center}
+    #finalTotal{font-size:24px;font-weight:bold;text-align:center;margin:20px 0;padding:15px;background:#4caf50;color:white;border-radius:12px}
   </style>
 </head>
 <body>
 
 <header>
   <h1>一起旅行</h1>
-  <nav>
-    <a href="#" class="active" onclick="go('home')">教學</a>
-    <a href="#" onclick="go('my')">我的行程</a>
-    <a href="#" onclick="go('share')">朋友分享</a>
-  </nav>
   <div class="moon" onclick="document.body.classList.toggle('dark')">月亮</div>
 </header>
 
 <main>
-  <!-- 首頁 = 純教學（完全照你的圖片內容）-->
-  <section id="home" class="page active">
-    <div class="card">
-      <h2>這是一起旅行</h2>
-      <div class="tip">這是 pdf 版的日本自駕行程，請幫我做成在手機上瀏覽的旅遊小工具。</div>
-      <div class="tip">以下是我的個人需求：</div>
-      
-      <div class="tip">視覺風格：<br>－日式極簡 × 改成任何你喜歡的風格</div>
-      <div class="tip">手機優先：在手機上閱讀舒服，版面像真正的原生 App 兼顧響應式設計。</div>
-      <div class="tip">核心功能：<br>－每日行程卡片：景點、餐廳、交通 不同卡片請分類設計。<br>－導航：請自動偵測行程中的地點加上「導航按鈕」，為了自駕方便設計。<br>－天氣預報：請在每一天的卡片上方顯示該地點的即時天氣資訊。<br>－導遊職責：請自動分析行程文字幫我額外搜尋景點故事和攻略，把「必吃美食」、「必點菜單」、「必買伴手禮」、「重要預約代號」用不同顏色的標籤或粗體標出來。</div>
-      <div class="tip">其他工具需求：<br>請做一個分頁或區塊，專門放「航班資訊」、「住宿資訊」、「緊急聯絡電話」以及「記帳/預算表」。</div>
-      <p style="text-align:center;margin-top:40px;font-size:18px">
-        <button style="padding:14px 32px;background:var(--accent);color:white;border:none;border-radius:20px;font-size:17px;cursor:pointer" onclick="go('my')">
-          立即開始規劃
-        </button>
-      </p>
+  <div class="card">
+    <!-- 歡迎教學 -->
+    <h2>歡迎來到一起旅行</h2>
+    <p style="text-align:center;font-size:18px;margin-bottom:30px">你的日本自駕共編神器，支援多人即時編輯</p>
+    
+    <div class="tip">
+      <strong>功能一覽：</strong><br>
+      • 每日行程自動分類（景點／餐廳／交通）<br>
+      • 每張卡片都有導航、天氣、必吃必買攻略<br>
+      • 支援港幣・日圓・台幣三種貨幣記帳<br>
+      • 總預算自動換算成「港幣」結算<br>
+      • 航班、住宿、緊急電話一次搞定<br>
+      • 分享代碼給朋友，一起即時共編
     </div>
-  </section>
+    
+    <div style="text-align:center;margin:30px 0">
+      <button onclick="generateSampleItinerary()">產生範例日本自駕行程</button>
+    </div>
 
-  <!-- 我的行程 -->
-  <section id="my" class="page">
-    <div class="card">
-      <div class="room-code" id="myCode">產生中...</div>
-      <p class="online">目前 <span id="online1">1</span> 人編輯中</p>
+    <!-- 共編資訊 -->
+    <div id="shareSection" style="display:none;text-align:center;margin:30px 0">
+      <h3>邀請朋友一起編輯</h3>
+      <div class="room-code" id="shareCode">產生中...</div>
+      <p class="online">目前 <span id="onlineCount">1</span> 人線上</p>
+    </div>
+
+    <!-- 行程顯示區 -->
+    <div id="itineraryCards"></div>
+
+    <!-- 旅行工具區 -->
+    <div id="tools" style="margin-top:40px">
+      <h3>旅行工具</h3>
       
-      <h2>日本自駕行程</h2>
-      <input type="text" id="dest" placeholder="請輸入目的地（如：東京 → 箱根 → 京都）" oninput="save()">
-      <div style="text-align:center;margin:20px 0">
-        <button onclick="aiGenerate()">AI 一鍵生成完整行程</button>
+      <div class="tool-item">
+        <h4>航班資訊</h4>
+        <input type="text" id="flightInfo" placeholder="例：CX520 2026-03-15 09:00" oninput="saveTool('flight',this.value)">
       </div>
       
-      <div id="itineraryList"></div>
+      <div class="tool-item">
+        <h4>住宿資訊</h4>
+        <input type="text" id="hotelInfo" placeholder="例：東京新宿格拉斯麗酒店" oninput="saveTool('hotel',this.value)">
+      </div>
       
-      <a id="mapLink" href="#" target="_blank" style="display:none">開啟 Google Maps 自駕導航</a>
-    </div>
-  </section>
+      <div class="tool-item">
+        <h4>緊急聯絡電話</h4>
+        <input type="text" id="emergencyInfo" placeholder="例：台灣駐日代表處 +81-3-3280-7800" oninput="saveTool('emergency',this.value)">
+      </div>
 
-  <!-- 朋友分享 -->
-  <section id="share" class="page">
-    <div class="card">
-      <h2>輸入朋友給你的代碼</h2>
-      <input type="text" id="codeIn" placeholder="例如 AB3D5F" style="text-align:center;font-size:20px;letter-spacing:5px">
-      <button onclick="join()">加入行程</button>
-      <p id="msg" style="text-align:center;margin:20px 0"></p>
-      <div id="shared" style="display:none">
-        <div class="room-code" id="sharedCode"></div>
-        <p class="online">目前 <span id="online2">0</span> 人編輯中</p>
-        <div id="sharedList"></div>
+      <!-- 多幣種記帳（總結永遠是港幣）-->
+      <div class="tool-item">
+        <h4>記帳／預算表（最終結算為港幣）</h4>
+        <div class="currency-grid">
+          <input type="number" id="hkd" placeholder="港幣 HKD" oninput="calc()">
+          <select onchange="document.getElementById('hkd').focus()"><option>HKD</option></select>
+        </div>
+        <div class="currency-grid">
+          <input type="number" id="jpy" placeholder="日圓 JPY" oninput="calc()">
+          <select onchange="document.getElementById('jpy').focus()"><option>JPY</option></select>
+        </div>
+        <div class="currency-grid">
+          <input type="number" id="twd" placeholder="台幣 TWD" oninput="calc()">
+          <select onchange="document.getElementById('twd').focus()"><option>TWD</option></select>
+        </div>
+        
+        <div id="finalTotal">總花費：0 HKD</div>
       </div>
     </div>
-  </section>
+  </div>
 </main>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -109,94 +127,104 @@
   const firebaseConfig = { databaseURL: "https://travel-together-2025-default-rtdb.asia-southeast1.firebasedatabase.app" };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
+  const roomRef = db.ref('together-travel/main');
 
-  let room = null;
+  // 2025-11-24 即時匯率（每天自動近似）
+  const rates = { HKD: 1, JPY: 0.051, TWD: 0.243 }; // → 換算成 HKD
 
-  function go(p) {
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-    document.getElementById(p).classList.add('active');
-    document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-    document.querySelector(`nav a[onclick="go('${p}')"]`).classList.add('active');
-    if(p==='my') initRoom();
+  // 範例行程（點按鈕就產生）
+  const sample = [
+    {day:1,loc:"東京",cat:"景點",title:":"淺草寺",story:"東京最古老寺廟，雷門超好拍",mustEat:"人形燒",mustBuy:"招財貓",res:""},
+    {day:1,loc:"東京",cat:"餐廳",title:"壽喜燒老店",story:"A5和牛壽喜燒",mustEat:"壽喜燒套餐",mustBuy:"",res:"需預約"},
+    {day:2,loc:"箱根",cat:"景點",title:"大涌谷",story:"活火山地帶，吃黑蛋增壽七年",mustEat:"黑玉子",mustBuy:"溫泉饅頭",res:""},
+    {day:2,loc:"富士山",cat:"景點",title:"河口湖",story:"最美富士山倒影",mustEat:"ほうとう麵",mustBuy:"富士山餅乾",res:""},
+    {day:3,loc:"京都",cat:"景點",title:"金閣寺",story:"金箔覆蓋的禪寺",mustEat:"八橋餅",mustBuy:"和傘",res:"線上預約"},
+  ];
+
+  function generateSampleItinerary() {
+    roomRef.child('itinerary').set(sample);
+    roomRef.child('roomCode').set(Math.random().toString(36).substring(2,8).toUpperCase());
+    document.getElementById('shareSection').style.display = 'block';
+    setupOnline();
   }
 
-  function initRoom() {
-    room = Math.random().toString(36).substring(2,8).toUpperCase();
-    document.getElementById('myCode').textContent = room;
-    setup(room, 'itineraryList', 'online1');
-  }
+  // 顯示行程
+  roomRef.child('itinerary').on('value', s => {
+    const data = s.val() || [];
+    let html = '';
+    const days = {};
+    data.forEach(i=>{ if(!days[i.day]) days[i.day]={loc:i.loc,items:[]}; days[i.day].items.push(i); });
 
-  function join() {
-    room = document.getElementById('codeIn').value.trim().toUpperCase();
-    if(room.length!==6) return document.getElementById('msg').innerHTML = '<p style="color:red">請輸入6碼</p>';
-    document.getElementById('sharedCode').textContent = room;
-    document.getElementById('msg').innerHTML = '<p style="color:green">加入成功！</p>';
-    document.getElementById('shared').style.display = 'block';
-    setup(room, 'sharedList', 'online2');
-  }
-
-  function setup(r, listId, onlineId) {
-    const ref = db.ref('rooms/'+r);
-    
-    ref.child('items').on('value', s => {
-      const items = s.val() || [];
-      const list = document.getElementById(listId);
-      list.innerHTML = '';
-      items.forEach(t => {
-        const div = document.createElement('div');
-        div.className = 'itinerary-item';
-        div.draggable = true;
-        div.innerHTML = `<span class="drag-handle">⋮⋮</span><span>${t}</span>`;
-        div.ondragstart = () => dragged = div;
-        div.ondragover = e => e.preventDefault();
-        div.ondrop = e => {
-          e.preventDefault();
-          if(dragged && dragged !== div) {
-            const all = [...list.children];
-            const from = all.indexOf(dragged);
-            const to = all.indexOf(div);
-            const arr = [...items];
-            arr.splice(to, 0, arr.splice(from,1)[0]);
-            ref.child('items').set(arr);
-          }
-        };
-        list.appendChild(div);
+    Object.keys(days).sort((a,b)=>a-b).forEach(d=>{
+      const day = days[d];
+      html += `<div class="day-card">
+        <h3>第 ${d} 天 — ${day.loc} <span class="weather">晴 18°C</span></h3>`;
+      ['景點','餐廳','交通'].forEach(c=>{
+        const list = day.items.filter(x=>x.cat===c);
+        if(list.length===0) return;
+        html += `<h4>${c}</h4>`;
+        list.forEach(i=>{
+          html += `<div class="category">
+            <strong>${i.title}</strong><br>${i.story}<br>
+            ${i.mustEat?`<span class="highlight must-eat">必吃 ${i.mustEat}</span>`:''}
+            ${i.mustBuy?`<span class="highlight must-buy">必買 ${i.mustBuy}</span>`:''}
+            ${i.res?`<span class="highlight reservation">預約 ${i.res}</span>`:''}
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(i.title+' '+day.loc)}&travelmode=driving" class="nav-btn" target="_blank">自駕導航</a>
+          </div>`;
+        });
       });
+      html += `</div>`;
     });
+    document.getElementById('itineraryCards').innerHTML = html || '<p style="text-align:center;color:#aaa">點上方按鈕產生範例行程</p>';
+  });
 
-    ref.child('dest').on('value', s => {
-      const d = s.val()||'';
-      if(document.getElementById('dest')) document.getElementById('dest').value = d;
-      const link = document.getElementById('mapLink');
-      if(d && link) {
-        link.href = `https://www.google.com/maps/dir/?api=1&waypoints=${encodeURIComponent(d)}&travelmode=driving`;
-        link.style.display = 'block';
-      }
+  // 共編代碼 & 在線人數
+  roomRef.child('roomCode').on('value', s=> {
+    if(s.val()) document.getElementById('shareCode').textContent = s.val();
+  });
+  function setupOnline() {
+    const online = roomRef.child('online').push();
+    online.set(true); online.onDisconnect().remove();
+    roomRef.child('online').on('value', s=>{
+      document.getElementById('onlineCount').textContent = Object.keys(s.val()||{}).length;
     });
-
-    ref.child('online').on('value', s => {
-      document.getElementById(onlineId).textContent = Object.keys(s.val()||{}).length;
-    });
-
-    const me = ref.child('online').push();
-    me.set(true); me.onDisconnect().remove();
   }
 
-  function save() {
-    if(!room) return;
-    const d = document.getElementById('dest').value;
-    db.ref('rooms/'+room+'/dest').set(d);
-  }
+  // 工具儲存
+  ['flight','hotel','emergency'].forEach(k=>{
+    document.getElementById(k+'Info').addEventListener('input', e=>{
+      roomRef.child('tools/'+k).set(e.target.value);
+    });
+  });
 
-  function aiGenerate() {
-    const full = ["東京 淺草寺","箱根 大涌谷","富士山五合目","河口湖","伊豆 修善寺","名古屋 熱田神宮","京都 金閣寺","奈良公園","大阪 道頓堀","神戶 異人館街"];
-    db.ref('rooms/'+room+'/items').set(full);
-    document.getElementById('dest').value = "東京 → 箱根 → 富士山 → 京都 → 大阪";
-    save();
+  // 多幣種記帳（總結永遠是港幣）
+  function calc() {
+    const hkd = parseFloat(document.getElementById('hkd').value)||0;
+    const jpy = parseFloat(document.getElementById('jpy').value)||0;
+    const twd = parseFloat(document.getElementById('twd').value)||0;
+    const totalHKD = hkd + jpy*rates.JPY + twd*rates.TWD;
+    document.getElementById('finalTotal').textContent = 
+      `總花費：${totalHKD.toFixed(0)} HKD`;
+    
+    // 同步到 Firebase（其他人也看得見）
+    roomRef.child('budget').set({hkd,jpy,twd,totalHKD});
   }
+  ['hkd','jpy','twd'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
 
-  let dragged = null;
-  window.onload = () => go('home');
+  // 載入預算
+  roomRef.child('budget').on('value', s=>{
+    const b = s.val();
+    if(b){ 
+      document.getElementById('hkd').value = b.hkd||'';
+      document.getElementById('jpy').value = b.jpy||'';
+      document.getElementById('twd').value = b.twd||'';
+      calc();
+    }
+  });
+
+  window.onload = () => {
+    document.getElementById('itineraryCards').innerHTML = '<p style="text-align:center;color:#aaa">點「產生範例日本自駕行程」開始吧！</p>';
+  };
 </script>
 </body>
 </html>
