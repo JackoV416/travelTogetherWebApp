@@ -39,15 +39,19 @@
     input,select{background:#f5f5f5}
     body.dark input,body.dark select{background:#333;color:white}
     button{background:var(--accent);color:white;font-weight:600;cursor:pointer}
+    button:hover{background:var(--soft)}
+    .btn-small{padding:12px 24px;width:auto;display:inline-block;margin:6px;font-size:15px;border-radius:20px}
     .currency-grid{display:grid;grid-template-columns:2fr 1fr;gap:10px;align-items:center}
     #finalTotal{font-size:24px;font-weight:bold;text-align:center;margin:20px 0;padding:15px;background:#4caf50;color:white;border-radius:12px}
+    #tools{background:var(--soft);padding:20px;border-radius:12px;margin:20px 0}
+    .tool-item{margin:10px 0}
   </style>
 </head>
 <body>
 
 <header>
   <h1>一起旅行</h1>
-  <div class="moon" onclick="document.body.classList.toggle('dark')">月亮</div>
+  <div class="moon" onclick="document.body.classList.toggle('dark')">🌙</div>
 </header>
 
 <main>
@@ -81,7 +85,7 @@
     <div id="itineraryCards"></div>
 
     <!-- 旅行工具區 -->
-    <div id="tools" style="margin-top:40px">
+    <div id="tools">
       <h3>旅行工具</h3>
       
       <div class="tool-item">
@@ -99,20 +103,20 @@
         <input type="text" id="emergencyInfo" placeholder="例：台灣駐日代表處 +81-3-3280-7800" oninput="saveTool('emergency',this.value)">
       </div>
 
-      <!-- 多幣種記帳（總結永遠是港幣）-->
+      <!-- 多幣種記帳（總結港幣） -->
       <div class="tool-item">
         <h4>記帳／預算表（最終結算為港幣）</h4>
         <div class="currency-grid">
-          <input type="number" id="hkd" placeholder="港幣 HKD" oninput="calc()">
-          <select onchange="document.getElementById('hkd').focus()"><option>HKD</option></select>
+          <input type="number" id="hkd" placeholder="港幣 HKD" oninput="calcBudget()">
+          <select id="currencyHKD" onchange="switchCurrency('hkd')"><option>HKD</option></select>
         </div>
         <div class="currency-grid">
-          <input type="number" id="jpy" placeholder="日圓 JPY" oninput="calc()">
-          <select onchange="document.getElementById('jpy').focus()"><option>JPY</option></select>
+          <input type="number" id="jpy" placeholder="日圓 JPY" oninput="calcBudget()">
+          <select id="currencyJPY" onchange="switchCurrency('jpy')"><option>JPY</option></select>
         </div>
         <div class="currency-grid">
-          <input type="number" id="twd" placeholder="台幣 TWD" oninput="calc()">
-          <select onchange="document.getElementById('twd').focus()"><option>TWD</option></select>
+          <input type="number" id="twd" placeholder="台幣 TWD" oninput="calcBudget()">
+          <select id="currencyTWD" onchange="switchCurrency('twd')"><option>TWD</option></select>
         </div>
         
         <div id="finalTotal">總花費：0 HKD</div>
@@ -129,101 +133,125 @@
   const db = firebase.database();
   const roomRef = db.ref('together-travel/main');
 
-  // 2025-11-24 即時匯率（每天自動近似）
-  const rates = { HKD: 1, JPY: 0.051, TWD: 0.243 }; // → 換算成 HKD
+  // 匯率 (2025-11-24 即時, 1 HKD = 約 19.6 JPY, 1 HKD = 約 4.11 TWD)
+  const rates = { HKD: 1, JPY: 19.6, TWD: 4.11 };
 
-  // 範例行程（點按鈕就產生）
-  const sample = [
-    {day:1,loc:"東京",cat:"景點",title:":"淺草寺",story:"東京最古老寺廟，雷門超好拍",mustEat:"人形燒",mustBuy:"招財貓",res:""},
+  // 範例日本自駕行程
+  const sampleItinerary = [
+    {day:1,loc:"東京",cat:"景點",title:"淺草寺",story:"東京最古老寺廟，雷門超好拍",mustEat:"人形燒",mustBuy:"招財貓",res:""},
     {day:1,loc:"東京",cat:"餐廳",title:"壽喜燒老店",story:"A5和牛壽喜燒",mustEat:"壽喜燒套餐",mustBuy:"",res:"需預約"},
+    {day:1,loc:"東京",cat:"交通",title:"自駕至箱根",story:"經東名高速",mustEat:"",mustBuy:"",res:""},
     {day:2,loc:"箱根",cat:"景點",title:"大涌谷",story:"活火山地帶，吃黑蛋增壽七年",mustEat:"黑玉子",mustBuy:"溫泉饅頭",res:""},
-    {day:2,loc:"富士山",cat:"景點",title:"河口湖",story:"最美富士山倒影",mustEat:"ほうとう麵",mustBuy:"富士山餅乾",res:""},
-    {day:3,loc:"京都",cat:"景點",title:"金閣寺",story:"金箔覆蓋的禪寺",mustEat:"八橋餅",mustBuy:"和傘",res:"線上預約"},
+    {day:2,loc:"箱根",cat:"餐廳",title:"溫泉懷石",story:"箱根特色料理",mustEat:"河鮮刺身",mustBuy:"",res:""},
+    {day:2,loc:"箱根",cat:"交通",title:"自駕至富士山",story:"湖畔景觀路",mustEat:"",mustBuy:"",res:""},
+    {day:3,loc:"富士山",cat:"景點",title:"河口湖",story:"最美富士山倒影",mustEat:"ほうとう麵",mustBuy:"富士山餅乾",res:""},
+    {day:3,loc:"富士山",cat:"餐廳",title:"ほうとう專門店",story:"山梨傳統麵食",mustEat:"ほうとう套餐",mustBuy:"",res:""},
+    {day:3,loc:"富士山",cat:"交通",title:"自駕至京都",story:"中部橫斷道",mustEat:"",mustBuy:"",res:""},
+    {day:4,loc:"京都",cat:"景點",title:"金閣寺",story:"金箔覆蓋的禪寺",mustEat:"八橋餅",mustBuy:"和傘",res:"線上預約"},
+    {day:4,loc:"京都",cat:"餐廳",title:"懷石料理",story:"京都多道菜",mustEat:"季節懷石",mustBuy:"",res:"需預約"},
+    {day:4,loc:"京都",cat:"交通",title:"市內自駕",story:"古都小路",mustEat:"",mustBuy:"",res:""},
+    {day:5,loc:"大阪",cat:"景點",title:"大阪城",story:"歷史堡壘花園",mustEat:"章魚燒",mustBuy:"奇幻KitKat",res:""},
+    {day:5,loc:"大阪",cat:"餐廳",title:"大阪燒",story:"鐵板料理",mustEat:"廣島風大阪燒",mustBuy:"",res:""},
+    {day:5,loc:"大阪",cat:"交通",title:"返程自駕",story:"高速回東京",mustEat:"",mustBuy:"",res:""}
   ];
 
   function generateSampleItinerary() {
-    roomRef.child('itinerary').set(sample);
-    roomRef.child('roomCode').set(Math.random().toString(36).substring(2,8).toUpperCase());
+    roomRef.child('itinerary').set(sampleItinerary);
+    const code = Math.random().toString(36).substring(2,8).toUpperCase();
+    roomRef.child('shareCode').set(code);
     document.getElementById('shareSection').style.display = 'block';
+    document.getElementById('shareCode').textContent = code;
     setupOnline();
   }
 
-  // 顯示行程
-  roomRef.child('itinerary').on('value', s => {
-    const data = s.val() || [];
+  // 顯示每日卡片
+  roomRef.child('itinerary').on('value', snap => {
+    const data = snap.val() || [];
     let html = '';
     const days = {};
-    data.forEach(i=>{ if(!days[i.day]) days[i.day]={loc:i.loc,items:[]}; days[i.day].items.push(i); });
+    data.forEach(item => {
+      if (!days[item.day]) days[item.day] = { loc: item.loc, weather: getWeather(item.loc), items: { 景點: [], 餐廳: [], 交通: [] } };
+      days[item.day].items[item.cat].push(item);
+    });
 
-    Object.keys(days).sort((a,b)=>a-b).forEach(d=>{
-      const day = days[d];
+    Object.keys(days).sort((a, b) => a - b).forEach(day => {
+      const dayData = days[day];
       html += `<div class="day-card">
-        <h3>第 ${d} 天 — ${day.loc} <span class="weather">晴 18°C</span></h3>`;
-      ['景點','餐廳','交通'].forEach(c=>{
-        const list = day.items.filter(x=>x.cat===c);
-        if(list.length===0) return;
-        html += `<h4>${c}</h4>`;
-        list.forEach(i=>{
-          html += `<div class="category">
-            <strong>${i.title}</strong><br>${i.story}<br>
-            ${i.mustEat?`<span class="highlight must-eat">必吃 ${i.mustEat}</span>`:''}
-            ${i.mustBuy?`<span class="highlight must-buy">必買 ${i.mustBuy}</span>`:''}
-            ${i.res?`<span class="highlight reservation">預約 ${i.res}</span>`:''}
-            <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(i.title+' '+day.loc)}&travelmode=driving" class="nav-btn" target="_blank">自駕導航</a>
-          </div>`;
-        });
+        <h3>第 ${day} 天 - ${dayData.loc} <span class="weather">${dayData.weather}</span></h3>`;
+      
+      ['景點', '餐廳', '交通'].forEach(cat => {
+        if (dayData.items[cat].length > 0) {
+          html += `<h4>${cat}</h4>`;
+          dayData.items[cat].forEach(item => {
+            html += `<div class="category">
+              <strong>${item.title}</strong><br>${item.story}<br>
+              ${item.mustEat ? `<span class="highlight must-eat">必吃：${item.mustEat}</span>` : ''}
+              ${item.mustBuy ? `<span class="highlight must-buy">必買：${item.mustBuy}</span>` : ''}
+              ${item.res ? `<span class="highlight reservation">預約：${item.res}</span>` : ''}
+              <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(item.title + ', ' + dayData.loc)}&travelmode=driving" class="nav-btn" target="_blank">自駕導航</a>
+            </div>`;
+          });
+        }
       });
-      html += `</div>`;
+      html += '</div>';
     });
-    document.getElementById('itineraryCards').innerHTML = html || '<p style="text-align:center;color:#aaa">點上方按鈕產生範例行程</p>';
+    document.getElementById('itineraryCards').innerHTML = html || '<p style="text-align:center;color:#aaa;margin:40px 0">點上方按鈕產生範例日本自駕行程</p>';
   });
 
-  // 共編代碼 & 在線人數
-  roomRef.child('roomCode').on('value', s=> {
-    if(s.val()) document.getElementById('shareCode').textContent = s.val();
-  });
-  function setupOnline() {
-    const online = roomRef.child('online').push();
-    online.set(true); online.onDisconnect().remove();
-    roomRef.child('online').on('value', s=>{
-      document.getElementById('onlineCount').textContent = Object.keys(s.val()||{}).length;
-    });
+  function getWeather(loc) {
+    const weathers = {
+      '東京': '晴 18°C',
+      '箱根': '多雲 15°C',
+      '富士山': '晴 12°C',
+      '京都': '陰 16°C',
+      '大阪': '小雨 17°C'
+    };
+    return weathers[loc] || '預測中...';
   }
 
-  // 工具儲存
-  ['flight','hotel','emergency'].forEach(k=>{
-    document.getElementById(k+'Info').addEventListener('input', e=>{
-      roomRef.child('tools/'+k).set(e.target.value);
+  // 工具同步
+  ['flightInfo', 'hotelInfo', 'emergencyInfo'].forEach(id => {
+    document.getElementById(id).addEventListener('input', e => {
+      roomRef.child('tools/' + id.replace('Info', '')).set(e.target.value);
     });
   });
 
-  // 多幣種記帳（總結永遠是港幣）
-  function calc() {
-    const hkd = parseFloat(document.getElementById('hkd').value)||0;
-    const jpy = parseFloat(document.getElementById('jpy').value)||0;
-    const twd = parseFloat(document.getElementById('twd').value)||0;
-    const totalHKD = hkd + jpy*rates.JPY + twd*rates.TWD;
-    document.getElementById('finalTotal').textContent = 
-      `總花費：${totalHKD.toFixed(0)} HKD`;
-    
-    // 同步到 Firebase（其他人也看得見）
-    roomRef.child('budget').set({hkd,jpy,twd,totalHKD});
+  // 多幣種計算（總結港幣）
+  function calcBudget() {
+    const hkd = parseFloat(document.getElementById('hkd').value) || 0;
+    const jpy = parseFloat(document.getElementById('jpy').value) || 0;
+    const twd = parseFloat(document.getElementById('twd').value) || 0;
+    const totalHKD = hkd + (jpy / rates.JPY) + (twd / rates.TWD);
+    document.getElementById('finalTotal').textContent = `總花費：${totalHKD.toFixed(0)} HKD`;
+    roomRef.child('budget').set({ hkd, jpy, twd, totalHKD });
   }
-  ['hkd','jpy','twd'].forEach(id=>document.getElementById(id).addEventListener('input',calc));
+  ['hkd', 'jpy', 'twd'].forEach(id => document.getElementById(id).addEventListener('input', calcBudget));
 
   // 載入預算
-  roomRef.child('budget').on('value', s=>{
-    const b = s.val();
-    if(b){ 
-      document.getElementById('hkd').value = b.hkd||'';
-      document.getElementById('jpy').value = b.jpy||'';
-      document.getElementById('twd').value = b.twd||'';
-      calc();
+  roomRef.child('budget').on('value', snap => {
+    const b = snap.val();
+    if (b) {
+      document.getElementById('hkd').value = b.hkd || '';
+      document.getElementById('jpy').value = b.jpy || '';
+      document.getElementById('twd').value = b.twd || '';
+      calcBudget();
     }
   });
 
+  // 共編在線
+  function setupOnline() {
+    const onlineRef = roomRef.child('online').push();
+    onlineRef.set(Date.now());
+    onlineRef.onDisconnect().remove();
+    roomRef.child('online').on('value', snap => {
+      const users = snap.val() || {};
+      const count = Object.keys(users).length;
+      document.getElementById('onlineCount').textContent = count;
+    });
+  }
+
   window.onload = () => {
-    document.getElementById('itineraryCards').innerHTML = '<p style="text-align:center;color:#aaa">點「產生範例日本自駕行程」開始吧！</p>';
+    document.getElementById('itineraryCards').innerHTML = '<p style="text-align:center;color:#aaa;margin:40px 0">歡迎！點「產生範例日本自駕行程」開始規劃吧～</p>';
   };
 </script>
 </body>
